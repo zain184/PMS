@@ -5,6 +5,7 @@
 ![alt text](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 
 ![alt text](https://img.shields.io/badge/Lucide_Icons-FF4D49?style=for-the-badge)
+
 A modern, pixel-perfect Project Management Dashboard built with React and Tailwind CSS. This system is designed for high-density data visualization, featuring custom interactive components, state-driven dynamic tables, and a specialized mobile-first responsive architecture.
 
 🚀 Key Features
