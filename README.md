@@ -6,6 +6,7 @@
 
 ![alt text](https://img.shields.io/badge/Lucide_Icons-FF4D49?style=for-the-badge)
 A modern, pixel-perfect Project Management Dashboard built with React and Tailwind CSS. This system is designed for high-density data visualization, featuring custom interactive components, state-driven dynamic tables, and a specialized mobile-first responsive architecture.
+
 🚀 Key Features
 
 1. Dynamic Contextual Dashboard
@@ -26,18 +27,3 @@ A modern, pixel-perfect Project Management Dashboard built with React and Tailwi
    Icons: Lucide React
    Routing: React Router Dom
    State Management: React Hooks (useState, useEffect, useRef)
-   📂 Project Structure
-   code
-   Text
-   src/
-   ├── assets/ # SVG Logos and static media
-   ├── components/
-   │ ├── header/ # Responsive Header with Status logic
-   │ ├── layout/ # Dashboard Shell (Backdrops & Constraints)
-   │ ├── navigation/ # QuickNav & Portal-based Mobile Menu
-   │ ├── stats/ # Interactive StatCards & MembersCard
-   │ └── table/ # Dynamic ProjectTable & TableTabs
-   ├── pages/
-   │ ├── Login.jsx # Professional Login Screen
-   │ └── Dashboard.jsx # Main Application "Brain"
-   └── App.jsx # Routing & Global Configuration
