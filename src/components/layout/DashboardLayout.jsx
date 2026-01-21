@@ -13,7 +13,7 @@ const DashboardLayout = ({ children, onMenuToggle }) => {
       <div className="relative z-10 flex flex-col min-h-screen">
         <Header toggleMobileMenu={onMenuToggle} />
 
-        <main className="p-7">{children}</main>
+        <main className="p-2">{children}</main>
 
         {/* Floating Chat Icon */}
         <button className="fixed bottom-6 right-8 w-12 h-12 bg-[#5D596C] text-white rounded-full flex items-center justify-center shadow-lg hover:bg-slate-700 transition-all">

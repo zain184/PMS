@@ -29,12 +29,12 @@ const Dashboard = () => {
         items={navItems}
       />
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
         <div className="hidden md:block">
           <QuickNav />
         </div>
 
-        <div className="grid grid-cols-2 md:flex md:flex-row md:flex-nowrap md:justify-start gap-8 overflow-x-auto scrollbar-hide">
+        <div className="grid grid-cols-2 md:flex md:flex-row md:flex-nowrap md:justify-start gap-2 md:gap-8 overflow-x-auto scrollbar-hide">
           <MembersCard />
 
           {/* ADDED: isActive and onClick props to all cards below */}

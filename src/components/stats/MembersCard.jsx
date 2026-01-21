@@ -39,7 +39,7 @@ const MembersCard = () => {
   }, [isOpen]);
 
   return (
-    <div className="relative w-full md:w-87 h-36.5 shrink-0">
+    <div className="relative w-full md:w-87 h-36.5 shrink-0 md:ml-7">
       {/* 1. Purple Notch Button (PC ONLY) */}
       <button
         ref={buttonRef}

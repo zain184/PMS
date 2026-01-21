@@ -187,16 +187,16 @@ const ProjectTable = ({ activeView }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-slate-100 mt-6 overflow-hidden">
+    <div className="bg-white rounded-xl shadow-sm border border-slate-100 mt-2 overflow-hidden">
       {/* --- HEADER SECTION --- */}
       <div className="transition-all duration-300">
         {activeView === "knowledge" ? (
-          <div className="p-4 md:p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <h2 className="text-[24px] md:text-[32px] font-bold text-[#5d596c]">
+          <div className="p-4 md:p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-2">
+            <h2 className="text-[18px] md:text-[24px] font-bold text-[#5d596c]">
               Knowledge Base
             </h2>
             <div className="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
-              <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 border-2 border-[#5d596c] text-[#5d596c] rounded-md font-bold hover:bg-slate-50">
+              <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 border border-[#5d596c] text-[#5d596c] rounded-md font-bold hover:bg-slate-50">
                 <Plus size={18} /> Add Document
               </button>
               <div className="relative w-full sm:w-75">

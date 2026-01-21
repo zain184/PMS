@@ -1,0 +1,84 @@
+import React from "react";
+import { User, Settings, LogOut } from "lucide-react";
+
+const UserProfileDropdown = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  const menuItems = [
+    { label: "My Profile", icon: <User size={18} />, link: "#" },
+    { label: "Settings", icon: <Settings size={18} />, link: "#" },
+    {
+      label: "Log Out",
+      icon: <LogOut size={18} />,
+      link: "/login",
+      isExit: true,
+    },
+  ];
+
+  return (
+    /* 
+      Desktop: Positioned absolutely below avatar 
+      Mobile: Width adjusted for small screens
+    */
+    <div className="absolute right-0 top-[calc(100%+10px)] w-57.5 bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-[#dbdade]/50 py-2 z-100 animate-in fade-in zoom-in-95 duration-200">
+      {/* 1. Header Section (Profile Summary) */}
+      <div className="px-5 py-4 flex items-center gap-3">
+        <div className="relative">
+          <img
+            src="https://i.pravatar.cc/150?u=admin"
+            className="w-10 h-10 rounded-full border border-[#dbdade] object-cover"
+            alt="Profile"
+          />
+          <span className="absolute top-0 right-0 w-3 h-3 bg-[#28c76f] border-2 border-white rounded-full" />
+        </div>
+        <div className="flex flex-col">
+          <span className="text-[15px] font-bold text-[#5d596c] leading-tight">
+            M Umer Pervez
+          </span>
+          <span className="text-[13px] text-[#b0adbb] font-medium">Admin</span>
+        </div>
+      </div>
+
+      <div className="h-px bg-[#dbdade]/50 w-full" />
+
+      {/* 2. Menu Items Section */}
+      <div className="py-2">
+        {menuItems.map((item, index) => (
+          <a
+            key={index}
+            href={item.link}
+            onClick={onClose}
+            className={`flex items-center gap-4 px-5 py-3 transition-colors group
+              ${item.isExit ? "hover:bg-red-50" : "hover:bg-[#F8F7FA]"}
+            `}
+          >
+            <span
+              className={`transition-colors 
+              ${
+                item.isExit
+                  ? "text-[#ea5455] group-hover:text-[#ea5455]"
+                  : "text-[#6f6b7d] group-hover:text-[#7367f0]"
+              }
+            `}
+            >
+              {item.icon}
+            </span>
+            <span
+              className={`text-[15px] font-medium transition-colors
+              ${
+                item.isExit
+                  ? "text-[#ea5455] group-hover:text-[#ea5455]"
+                  : "text-[#6f6b7d] group-hover:text-[#7367f0]"
+              }
+            `}
+            >
+              {item.label}
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default UserProfileDropdown;
