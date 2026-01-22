@@ -1,8 +1,42 @@
 import React from "react";
 import { User, Settings, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const UserProfileDropdown = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+
   if (!isOpen) return null;
+
+  // --- THE LOGOUT "CHECK-OUT" LOGIC ---
+  const handleLogout = () => {
+    const sessionStartStr = localStorage.getItem("pms_session_start");
+
+    if (sessionStartStr) {
+      const now = new Date();
+      const sessionStart = new Date(sessionStartStr);
+
+      // 1. Calculate seconds worked in THIS current session
+      const secondsInThisSession = Math.floor((now - sessionStart) / 1000);
+
+      // 2. Get the previous total accumulated today
+      const previousTotal = parseInt(
+        localStorage.getItem("pms_total_seconds") || "0",
+      );
+
+      // 3. Save the NEW total (Previous + Current Session)
+      localStorage.setItem(
+        "pms_total_seconds",
+        (previousTotal + secondsInThisSession).toString(),
+      );
+    }
+
+    // 4. Remove the session marker so the timer stops ticking
+    localStorage.removeItem("pms_session_start");
+
+    // 5. Cleanup UI and Navigate
+    onClose();
+    navigate("/login");
+  };
 
   const menuItems = [
     { label: "My Profile", icon: <User size={18} />, link: "#" },
@@ -10,16 +44,11 @@ const UserProfileDropdown = ({ isOpen, onClose }) => {
     {
       label: "Log Out",
       icon: <LogOut size={18} />,
-      link: "/login",
       isExit: true,
     },
   ];
 
   return (
-    /* 
-      Desktop: Positioned absolutely below avatar 
-      Mobile: Width adjusted for small screens
-    */
     <div className="absolute right-0 top-[calc(100%+10px)] w-57.5 bg-white rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.1)] border border-[#dbdade]/50 py-2 z-100 animate-in fade-in zoom-in-95 duration-200">
       {/* 1. Header Section (Profile Summary) */}
       <div className="px-5 py-4 flex items-center gap-3">
@@ -44,11 +73,10 @@ const UserProfileDropdown = ({ isOpen, onClose }) => {
       {/* 2. Menu Items Section */}
       <div className="py-2">
         {menuItems.map((item, index) => (
-          <a
+          <button
             key={index}
-            href={item.link}
-            onClick={onClose}
-            className={`flex items-center gap-4 px-5 py-3 transition-colors group
+            onClick={item.isExit ? handleLogout : onClose}
+            className={`w-full flex items-center gap-4 px-5 py-3 transition-colors group
               ${item.isExit ? "hover:bg-red-50" : "hover:bg-[#F8F7FA]"}
             `}
           >
@@ -74,7 +102,7 @@ const UserProfileDropdown = ({ isOpen, onClose }) => {
             >
               {item.label}
             </span>
-          </a>
+          </button>
         ))}
       </div>
     </div>

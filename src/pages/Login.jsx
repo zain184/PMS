@@ -1,58 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Logo from "../assets/maxobiz.svg";
-import { Route } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha"; // 1. Import library
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null); // 2. State for security token
+  const recaptchaRef = useRef(null); // 3. Ref to reset if login fails
   const navigate = useNavigate();
-  const handleLogin = () => {
-    // later you will add real auth logic here
+
+  // Handlers
+  const handleCaptchaChange = (token) => {
+    setCaptchaToken(token);
+  };
+
+  const handleCaptchaExpired = () => {
+    setCaptchaToken(null);
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    // Security Guard: Prevent login logic if captcha is missing
+    if (!captchaToken) return;
+
+    // --- YOUR EXISTING TIMER LOGIC (Do not change) ---
+    const now = new Date();
+    const todayStr = now.toDateString();
+    const savedDate = localStorage.getItem("pms_last_reset_date");
+
+    if (savedDate !== todayStr) {
+      localStorage.setItem("pms_total_seconds", "0");
+      localStorage.setItem("pms_last_reset_date", todayStr);
+    }
+    localStorage.setItem("pms_session_start", now.toISOString());
+    // --------------------------------------------------
+
     navigate("/dashboard");
   };
 
   return (
     <div className="relative min-h-screen bg-slate-200 flex items-center justify-center p-4 font-sans overflow-hidden">
-      {/* Decorative Background Shapes */}
-      <div className="absolute top-[-10%] left-[-10%] w-125 h-125 bg-white/40 rounded-full blur-3xl" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-150 h-150 bg-white/40 rounded-full blur-3xl" />
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-white/40 rounded-full blur-3xl" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-white/40 rounded-full blur-3xl" />
 
-      {/* Main Card: Fixed dimensions based on your Figma (548x616) */}
-      <div className="relative z-10 w-full max-w-137 min-h-154 bg-white rounded-2xl shadow-[0_4px_24px_0_rgba(34,41,47,0.1)] p-12 flex flex-col justify-center">
-        {/* Logo Section */}
+      <div className="relative z-10 w-full max-w-[548px] min-h-[616px] bg-white rounded-2xl shadow-[0_4px_24px_0_rgba(34,41,47,0.1)] p-12 flex flex-col justify-center">
         <div className="flex flex-col items-center mb-8">
           <img src={Logo} alt="maxobiz-logo" className="h-10 mb-6" />
           <h1 className="text-[26px] font-semibold text-[#5d596c] mb-2 text-center">
             Welcome to Maxobiz!
           </h1>
           <p className="text-[#6f6b7d] text-center text-[15px]">
-            Please sign-in to your account and start <br /> the adventure
+            Please sign-in to your account and start the adventure
           </p>
         </div>
 
-        {/* Form */}
-        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-          {/* Username Field */}
+        <form className="space-y-6" onSubmit={handleLogin}>
           <div>
-            <label className="block text-[13px] font-medium text-[#5d596c] uppercase tracking-[0.4px] mb-1">
+            <label className="block text-[13px] font-medium text-[#5d596c] uppercase mb-1">
               Username
             </label>
             <input
               type="text"
+              required
               placeholder="Enter your username"
               className="w-full px-4 py-2.5 rounded-md border border-[#dbdade] focus:border-[#7367f0] outline-none transition-all placeholder:text-[#b0adbb] text-[#6f6b7d]"
             />
           </div>
 
-          {/* Password Field */}
           <div>
-            <label className="block text-[13px] font-medium text-[#5d596c] uppercase tracking-[0.4px] mb-1">
+            <label className="block text-[13px] font-medium text-[#5d596c] uppercase mb-1">
               Password
             </label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
+                required
                 placeholder="············"
                 className="w-full px-4 py-2.5 rounded-md border border-[#dbdade] focus:border-[#7367f0] outline-none transition-all placeholder:text-[#b0adbb] text-[#6f6b7d]"
               />
@@ -66,8 +90,7 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Remember Me & Captcha */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4">
             <label className="flex items-center space-x-2 cursor-pointer">
               <input
                 type="checkbox"
@@ -76,30 +99,29 @@ const Login = () => {
               <span className="text-[15px] text-[#6f6b7d]">Remember Me</span>
             </label>
 
-            {/* reCAPTCHA Mockup */}
-            <div className="flex flex-col items-center">
-              <div className="bg-[#f8f7fa] p-1.5 rounded border border-[#dbdade]">
-                <svg
-                  className="w-5 h-5 text-[#7367f0]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                >
-                  <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  <path d="M12 7v5l3 3" />
-                </svg>
+            {/* 4. THE PRODUCTION reCAPTCHA WIDGET */}
+            <div className="flex justify-center md:justify-start overflow-hidden py-1">
+              <div className="transform scale-[0.85] md:scale-100 origin-left">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY} // Using .env variable
+                  onChange={handleCaptchaChange}
+                  onExpired={handleCaptchaExpired}
+                />
               </div>
-              <span className="text-[9px] text-[#b0adbb] mt-0.5 uppercase font-bold">
-                reCAPTCHA
-              </span>
             </div>
           </div>
 
-          {/* Login Button - Outlined style*/}
+          {/* 5. DYNAMIC BUTTON UX */}
           <button
-            onClick={handleLogin}
-            className="w-full bg-white hover:bg-[#7367f0] hover:text-white text-[#7367f0] border border-[#7367f0] py-2.5 px-4 rounded-md font-medium transition-all duration-200 mt-2"
+            type="submit"
+            disabled={!captchaToken}
+            className={`w-full py-2.5 px-4 rounded-md font-medium transition-all duration-200 mt-2 border 
+              ${
+                !captchaToken
+                  ? "bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed"
+                  : "bg-white hover:bg-[#7367f0] hover:text-white text-[#7367f0] border-[#7367f0]"
+              }`}
           >
             Login
           </button>

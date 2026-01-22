@@ -29,7 +29,7 @@ const Dashboard = () => {
   const handlePurpleClick = (e) => {
     e.stopPropagation();
     const rect = e.currentTarget.getBoundingClientRect();
-    // FIX: We use viewport coordinates only (no window.scrollY)
+    //We use viewport coordinates only (no window.scrollY)
     // This prevents the "middle of screen" and "disappearing" bugs.
     setPurpleCoords({
       top: rect.bottom + 10,
@@ -138,7 +138,7 @@ const Dashboard = () => {
               left: purpleCoords.left,
               position: "fixed", // Ensures it stays relative to the screen window
             }}
-            className="w-77 bg-white rounded-3xl shadow-[0_15px_50px_rgba(0,0,0,0.15)] border border-slate-100 p-7 z-[9999] animate-in fade-in slide-in-from-top-4"
+            className="w-77 bg-white rounded-3xl shadow-[0_15px_50px_rgba(0,0,0,0.15)] border border-slate-100 p-7 z-9999 animate-in fade-in slide-in-from-top-4"
           >
             <div className="text-center mb-6">
               <h2 className="text-[22px] font-bold text-[#202224] mb-1">
